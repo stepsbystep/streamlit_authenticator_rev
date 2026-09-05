@@ -445,10 +445,11 @@ class Authenticate:
 
         Returns
         -------
-        tuple[str, str, str] or (None, None, None)
+        tuple[str, str, str, str] or (None, None, None, None)
             - Email associated with the new user.
             - Username associated with the new user.
-            - Name associated with the new user.
+            - First Name associated with the new user.
+            - Last Name associated with the new user.
         """
         if isinstance(pre_authorized, bool) or isinstance(pre_authorized, dict):
             raise DeprecationError(f"""Please note that the 'pre_authorized' parameter now
@@ -523,7 +524,8 @@ class Authenticate:
                                                                 password_hint, pre_authorized,
                                                                 domains, roles, callback, captcha,
                                                                 entered_captcha)
-        return None, None, None
+        return None, None, None, None
+                        
     def reset_password(self, username: str, location: Literal['main', 'sidebar'] = 'main',
                        fields: Optional[Dict[str, str]] = None, clear_on_submit: bool = False,
                        key: str = 'Reset password', callback: Optional[Callable] = None
