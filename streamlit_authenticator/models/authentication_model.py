@@ -274,6 +274,41 @@ class AuthenticationModel:
         name = f"{user.get('first_name', '')} {user.get('last_name', '')}".strip() \
             or user.get('name')
         return name
+    # added bf 9/5/26
+    def _get_user_first_name(self, username: str) -> Optional[str]:
+        """
+        Retrieves the first name of a user.
+
+        Parameters
+        ----------
+        username : str
+            The username of the user.
+
+        Returns
+        -------
+        Optional[str]
+            The first name of the user if available, otherwise None.
+        """
+        user = self.credentials['usernames'][username]
+        name = f"{user.get('first_name', '')}"
+        return name
+    def _get_user_last_name(self, username: str) -> Optional[str]:
+        """
+        Retrieves the last name of a user.
+
+        Parameters
+        ----------
+        username : str
+            The username of the user.
+
+        Returns
+        -------
+        Optional[str]
+            The last name of the user if available, otherwise None.
+        """
+        user = self.credentials['usernames'][username]
+        name = f"{user.get('last_name', '')}"
+        return name
     def guest_login(self, cookie_controller: Any, provider: str = 'google',
                     oauth2: Optional[Dict[str, Any]] = None,
                     max_concurrent_users: Optional[int] = None,
@@ -406,11 +441,13 @@ class AuthenticationModel:
                 user = self.credentials['usernames'][username]
                 if single_session and user.get('logged_in'):
                     raise LoginError('Cannot log in multiple sessions')
-                st.session_state['email'] = user.get('email')
-                st.session_state['name'] = self._get_user_name(username)
-                st.session_state['roles'] = user.get('roles')
+                st.session_state['auth_email'] = user.get('email')
+                st.session_state['auth_name'] = self._get_user_name(username)
+                st.session_state['auth_first_name'] = self._get_user_first_name(username)
+                st.session_state['auth_last_name'] = self._get_user_last_name(username)
+                st.session_state['auth_roles'] = user.get('roles')
+                st.session_state['auth_username'] = username
                 st.session_state['authentication_status'] = True
-                st.session_state['username'] = username
                 self._record_failed_login_attempts(username, reset=True)
                 self.credentials['usernames'][username]['logged_in'] = True
                 if 'password_hint' in st.session_state:
