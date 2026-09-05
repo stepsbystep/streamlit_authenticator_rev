@@ -522,11 +522,13 @@ class AuthenticationModel:
         self.credentials['usernames'][username] = user_data
         if self.path:
             Helpers.update_config_file(self.path, 'credentials', self.credentials)
+
+    # bf updates for separate first and last names
     def register_user(self, new_first_name: str, new_last_name: str, new_email: str,
                       new_username: str, new_password: str, password_hint: str,
                       pre_authorized: Optional[List[str]] = None,
                       roles: Optional[List[str]] = None,
-                      callback: Optional[Callable] = None) -> Tuple[str, str, str]:
+                      callback: Optional[Callable] = None) -> Tuple[str, str, str, str]:
         """
         Registers a new user's first name, last name, username, password, email, and roles.
 
@@ -553,8 +555,8 @@ class AuthenticationModel:
 
         Returns
         -------
-        Tuple[str, str, str]
-            The email, username, and full name of the registered user.
+        Tuple[str, str, str, str]
+            The email, username, and first and last names of the registered user.
         """
         if self._credentials_contains_value(new_email):
             raise RegisterError('Email already taken')
@@ -581,7 +583,8 @@ class AuthenticationModel:
             callback({'widget': 'Register user', 'new_name': new_first_name,
                       'new_last_name': new_last_name, 'new_email': new_email,
                       'new_username': new_username})
-        return new_email, new_username, f'{new_first_name} {new_last_name}'
+        return new_email, new_username, new_first_name, new_last_name
+                        
     def reset_password(self, username: str, password: str, new_password: str,
                        callback: Optional[Callable] = None) -> bool:
         """
