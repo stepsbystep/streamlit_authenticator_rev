@@ -275,12 +275,16 @@ class AuthenticationController:
             Function to be executed upon logout.
         """
         self.authentication_model.logout(callback)
+
+
+    # bf adds information about returning 4 strings the last two first and last names
+    # instead of the original full name 9/5/26
     def register_user(self, new_first_name: str, new_last_name: str, new_email: str,
                       new_username: str, new_password: str, new_password_repeat: str,
                       password_hint: str, pre_authorized: Optional[List[str]] = None,
                       domains: Optional[List[str]] = None, roles: Optional[List[str]] = None,
                       callback: Optional[Callable] = None, captcha: bool = False,
-                      entered_captcha: Optional[str] = None) -> Tuple[str, str, str]:
+                      entered_captcha: Optional[str] = None) -> Tuple[str, str, str, str]:
         """
         Handles user registration requests.
 
@@ -317,8 +321,8 @@ class AuthenticationController:
 
         Returns
         -------
-        Tuple[str, str, str]
-            Tuple containing (email, username, full name).
+        Tuple[str, str, str, str]
+            Tuple containing (email, username, first name, last name).
         """
         new_first_name = new_first_name.strip()
         new_last_name = new_last_name.strip()
@@ -356,6 +360,7 @@ class AuthenticationController:
         return self.authentication_model.register_user(new_first_name, new_last_name, new_email,
                                                        new_username, new_password, password_hint,
                                                        pre_authorized, roles, callback)
+                        
     def reset_password(self, username: str, password: str, new_password: str,
                        new_password_repeat: str, callback: Optional[Callable] = None) -> bool:
         """
