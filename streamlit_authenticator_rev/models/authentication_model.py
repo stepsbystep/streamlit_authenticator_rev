@@ -497,11 +497,11 @@ class AuthenticationModel:
             st.session_state['name'] = self._get_user_name(token['username'])
             st.session_state['roles'] = user.get('roles')    
             st.session_state['authentication_status'] = True
-            st.session_state['auth_username'] = username
+            st.session_state['auth_username'] = token['username']
             st.session_state['auth_email'] = user.get('email')
-            st.session_state['auth_name'] = self._get_user_name(username)
-            st.session_state['auth_first_name'] = self._get_user_first_name(username)
-            st.session_state['auth_last_name'] = self._get_user_last_name(username)
+            st.session_state['auth_name'] = self._get_user_name(token['username'])
+            st.session_state['auth_first_name'] = self._get_user_first_name(token['username'])
+            st.session_state['auth_last_name'] = self._get_user_last_name(token['username'])
             st.session_state['auth_roles'] = user.get('roles')
             self.credentials['usernames'][token['username']]['logged_in'] = True
             if self.path:
