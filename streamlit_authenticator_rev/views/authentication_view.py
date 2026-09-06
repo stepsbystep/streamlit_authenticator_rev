@@ -330,9 +330,9 @@ class Authenticate:
             raise ValueError("Location must be one of 'main' or 'sidebar' or 'unrendered'")
         if not st.session_state.get('authentication_status'):
             ###$
-            print(f'login view: auth fails once')
+            #print(f'login view: auth fails once')
             token = self.cookie_controller.get_cookie()
-            print(f'token {token}')
+            #print(f'token {token}')
             if token:
                 self.authentication_controller.login(token=token)
             time.sleep(self.attrs.get('login_sleep_time', params.PRE_LOGIN_SLEEP_TIME))
@@ -365,7 +365,7 @@ class Authenticate:
                 if login_form.form_submit_button('Login' if 'Login' not in fields
                                                  else fields['Login']):
                     ###$
-                    print(f'login view: CONTROLLER CALLED')
+                    #print(f'login view: CONTROLLER CALLED')
 
                     if self.authentication_controller.login(username, password,
                                                             max_concurrent_users,
