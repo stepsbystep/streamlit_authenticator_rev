@@ -443,7 +443,9 @@ class AuthenticationModel:
                 if single_session and user.get('logged_in'):
                     raise LoginError('Cannot log in multiple sessions')
                 st.session_state['auth_email'] = user.get('email')
+                st.session_state['email'] = user.get('email')
                 st.session_state['auth_name'] = self._get_user_name(username)
+                st.session_state['name'] = self._get_user_name(username)
                 st.session_state['auth_first_name'] = self._get_user_first_name(username)
                 st.session_state['auth_last_name'] = self._get_user_last_name(username)
                 st.session_state['auth_roles'] = user.get('roles')
