@@ -484,6 +484,8 @@ class AuthenticationModel:
                 st.session_state['password_hint'] = user.get('password_hint')
             return False
         if token:
+            if token['username']==None:
+                return None
             if not token['username'] in self.credentials['usernames']:
                 raise LoginError('User not authorized')
             user = self.credentials['usernames'][token['username']]
