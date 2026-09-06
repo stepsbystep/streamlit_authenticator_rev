@@ -220,6 +220,7 @@ class AuthenticationController:
                                                      max_concurrent_users=max_concurrent_users,
                                                      single_session=single_session,
                                                      callback=callback)
+
     def login(self, username: Optional[str] = None, password: Optional[str] = None,
               max_concurrent_users: Optional[int] = None, max_login_attempts: Optional[int] = None,
               token: Optional[Dict[str, str]] = None, single_session: bool = False,
@@ -265,6 +266,7 @@ class AuthenticationController:
         return self.authentication_model.login(username, password, max_concurrent_users,
                                                max_login_attempts, token, single_session,
                                                callback)
+                                               
     def logout(self, callback: Optional[Callable]=None) -> None:
         """
         Logs out the user by clearing session state variables.

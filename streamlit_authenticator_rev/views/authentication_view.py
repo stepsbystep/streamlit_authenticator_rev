@@ -286,6 +286,7 @@ class Authenticate:
                 if location == 'sidebar' and auth_endpoint:
                     st.sidebar.link_button(button_name, url=auth_endpoint,
                                            use_container_width=use_container_width)
+
     def login(self, location: Literal['main', 'sidebar', 'unrendered'] = 'main',
               max_concurrent_users: Optional[int] = None, max_login_attempts: Optional[int] = None,
               fields: Optional[Dict[str, str]] = None, captcha: bool = False,
@@ -328,6 +329,8 @@ class Authenticate:
         if location not in ['main', 'sidebar', 'unrendered']:
             raise ValueError("Location must be one of 'main' or 'sidebar' or 'unrendered'")
         if not st.session_state.get('authentication_status'):
+            ###$
+            print(f'login view: auth fails')
             token = self.cookie_controller.get_cookie()
             if token:
                 self.authentication_controller.login(token=token)
@@ -360,6 +363,9 @@ class Authenticate:
                     login_form.image(Helpers.generate_captcha('login_captcha', self.secret_key))
                 if login_form.form_submit_button('Login' if 'Login' not in fields
                                                  else fields['Login']):
+                    ###$
+                    print(f'login view: CONTROLLER CALLED')
+
                     if self.authentication_controller.login(username, password,
                                                             max_concurrent_users,
                                                             max_login_attempts,
@@ -369,6 +375,7 @@ class Authenticate:
                         self.cookie_controller.set_cookie()
                         if self.path and self.cookie_controller.get_cookie():
                             st.rerun()
+        
     def logout(self, button_name: str = 'Logout',
                location: Literal['main', 'sidebar', 'unrendered'] = 'main',
                key: str = 'Logout', use_container_width: bool = False,

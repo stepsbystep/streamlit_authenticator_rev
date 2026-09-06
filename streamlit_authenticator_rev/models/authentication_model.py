@@ -110,6 +110,19 @@ class AuthenticationModel:
             st.session_state['roles'] = None
         if 'logout' not in st.session_state:
             st.session_state['logout'] = None
+        if 'logout' not in st.session_state:
+            st.session_state['auth_username'] = None
+        if 'auth_username' not in st.session_state:
+            st.session_state['auth_email'] = None
+        if 'auth_name' not in st.session_state:
+            st.session_state['auth_name'] = None
+        if 'auth_first_name' not in st.session_state:
+            st.session_state['auth_first_name'] = None
+        if 'auth_last_name' not in st.session_state:
+            st.session_state['auth_last_name'] = None
+        if 'auth_roles' not in st.session_state:
+            st.session_state['auth_roles'] = None
+
         self.encryptor = Encryptor(self.secret_key)
     def check_credentials(self, username: str, password: str) -> bool:
         """
@@ -398,6 +411,7 @@ class AuthenticationModel:
             False: non-guest user.
         """
         return 'password' not in self.credentials['usernames'].get(username, {'password': None})
+        
     def login(self, username: str, password: str, max_concurrent_users: Optional[int] = None,
               max_login_attempts: Optional[int] = None, token: Optional[Dict[str, str]] = None,
               single_session: bool = False, callback: Optional[Callable] = None) -> bool:
@@ -442,17 +456,17 @@ class AuthenticationModel:
                 user = self.credentials['usernames'][username]
                 if single_session and user.get('logged_in'):
                     raise LoginError('Cannot log in multiple sessions')
-                st.session_state['auth_email'] = user.get('email')
                 st.session_state['email'] = user.get('email')
-                st.session_state['auth_name'] = self._get_user_name(username)
                 st.session_state['name'] = self._get_user_name(username)
+                st.session_state['roles'] = user.get('roles')
+                st.session_state['username'] = username
+                st.session_state['authentication_status'] = True
+                st.session_state['auth_username'] = username
+                st.session_state['auth_email'] = user.get('email')
+                st.session_state['auth_name'] = self._get_user_name(username)
                 st.session_state['auth_first_name'] = self._get_user_first_name(username)
                 st.session_state['auth_last_name'] = self._get_user_last_name(username)
                 st.session_state['auth_roles'] = user.get('roles')
-                st.session_state['roles'] = user.get('roles')
-                st.session_state['auth_username'] = username
-                st.session_state['username'] = username
-                st.session_state['authentication_status'] = True
                 self._record_failed_login_attempts(username, reset=True)
                 self.credentials['usernames'][username]['logged_in'] = True
                 if 'password_hint' in st.session_state:
@@ -473,15 +487,22 @@ class AuthenticationModel:
             if not token['username'] in self.credentials['usernames']:
                 raise LoginError('User not authorized')
             user = self.credentials['usernames'][token['username']]
+            st.session_state['username'] = token['username']
             st.session_state['email'] = user.get('email')
             st.session_state['name'] = self._get_user_name(token['username'])
             st.session_state['roles'] = user.get('roles')    
             st.session_state['authentication_status'] = True
-            st.session_state['username'] = token['username']
+            st.session_state['auth_username'] = username
+            st.session_state['auth_email'] = user.get('email')
+            st.session_state['auth_name'] = self._get_user_name(username)
+            st.session_state['auth_first_name'] = self._get_user_first_name(username)
+            st.session_state['auth_last_name'] = self._get_user_last_name(username)
+            st.session_state['auth_roles'] = user.get('roles')
             self.credentials['usernames'][token['username']]['logged_in'] = True
             if self.path:
                 Helpers.update_config_file(self.path, 'credentials', self.credentials)
         return None
+
     def logout(self, callback: Optional[Callable] = None) -> None:
         """
         Logs out the user by clearing session state variables.
@@ -507,6 +528,7 @@ class AuthenticationModel:
             st.session_state[key] = None
         if self.path:
             Helpers.update_config_file(self.path, 'credentials', self.credentials)
+
     def _record_failed_login_attempts(self, username: str, reset: bool = False) -> None:
         """
         Records the number of failed login attempts for a given username.
