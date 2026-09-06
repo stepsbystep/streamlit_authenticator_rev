@@ -236,6 +236,7 @@ class AuthenticationModel:
                                                               punctuation=False)
         st.session_state[f'2FA_code_{widget}'] = self.encryptor.encrypt(two_factor_auth_code)
         self.send_email('2FA', email, two_factor_auth_code)
+      
     def _get_username(self, key: str, value: str) -> Optional[str]:
         """
         Retrieves the username associated with a given key-value pair.
@@ -446,7 +447,9 @@ class AuthenticationModel:
                 st.session_state['auth_first_name'] = self._get_user_first_name(username)
                 st.session_state['auth_last_name'] = self._get_user_last_name(username)
                 st.session_state['auth_roles'] = user.get('roles')
+                st.session_state['roles'] = user.get('roles')
                 st.session_state['auth_username'] = username
+                st.session_state['username'] = username
                 st.session_state['authentication_status'] = True
                 self._record_failed_login_attempts(username, reset=True)
                 self.credentials['usernames'][username]['logged_in'] = True
