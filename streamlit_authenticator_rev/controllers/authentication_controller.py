@@ -59,7 +59,7 @@ class AuthenticationController:
         server_url : str, optional
             Cloud server URL used for cloud-related transactions.
         """
-        self.secret_key = secret_key
+        self.secret_key = st.secrets['authenticator_key']
         self.validator = validator if validator is not None else Validator()
         self.authentication_model = AuthenticationModel(credentials, auto_hash, path, api_key,
                                                         self.secret_key, server_url, self.validator)

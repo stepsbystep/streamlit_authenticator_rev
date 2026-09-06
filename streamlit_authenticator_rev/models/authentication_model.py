@@ -42,7 +42,7 @@ class AuthenticationModel:
             auto_hash: bool = True,
             path: Optional[str] = None,
             api_key: Optional[str] = None,
-            secret_key: str = 'some_key',
+            secret_key: str = st.secrets['authenticator_key'],
             server_url: Optional[str] = None,
             validator: Optional[Validator] = None
             ) -> None:
