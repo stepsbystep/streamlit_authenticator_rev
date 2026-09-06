@@ -366,7 +366,6 @@ class Authenticate:
                                                  else fields['Login']):
                     ###$
                     #print(f'login view: CONTROLLER CALLED')
-
                     if self.authentication_controller.login(username, password,
                                                             max_concurrent_users,
                                                             max_login_attempts,

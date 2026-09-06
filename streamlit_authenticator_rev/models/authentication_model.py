@@ -124,6 +124,7 @@ class AuthenticationModel:
             st.session_state['auth_roles'] = None
 
         self.encryptor = Encryptor(self.secret_key)
+
     def check_credentials(self, username: str, password: str) -> bool:
         """
         Checks whether the entered credentials are valid.
@@ -485,6 +486,8 @@ class AuthenticationModel:
             return False
         if token:
             if token['username']==None:
+                ###$
+                print(f'token {token}')
                 return None
             if not token['username'] in self.credentials['usernames']:
                 raise LoginError('User not authorized')
