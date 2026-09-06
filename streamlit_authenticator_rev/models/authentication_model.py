@@ -77,7 +77,7 @@ class AuthenticationModel:
         else:
             self.credentials = credentials
         self.cloud_model = CloudModel(self.api_key, server_url) if self.api_key else None
-        self.secret_key = secret_key
+        self.secret_key = st.secrets['authenticator_key']
         self.validator = validator if validator is not None else Validator()
         if self.credentials['usernames']:
             self.credentials['usernames'] = {

@@ -35,8 +35,8 @@ class Authenticate:
     def __init__(
             self,
             credentials: Union[Dict[str, Any], str],
-            cookie_name: str = 'some_cookie_name',
-            cookie_key: str = 'some_key',
+            cookie_name: str = 'a_very_good_cookie!',
+            cookie_key: str = st.secrets['authenticator_key'],
             cookie_expiry_days: float = 30.0,
             validator: Optional[Validator] = None,
             auto_hash: bool = True,

@@ -36,7 +36,7 @@ class AuthenticationController:
             auto_hash: bool = True,
             path: Optional[str] = None,
             api_key: Optional[str] = None,
-            secret_key: str = 'some_key',
+            secret_key: str = st.secrets['authenticator_key'],
             server_url: Optional[str] = None) -> None:
         """
         Initializes the AuthenticationController instance.
@@ -54,7 +54,7 @@ class AuthenticationController:
         api_key : str, optional
             API key for connecting to the cloud server for password resets and two-factor
             authentication.
-        secret_key : str, default='some_key'
+        secret_key : str, default= a key
             Secret key used for encryption and decryption.
         server_url : str, optional
             Cloud server URL used for cloud-related transactions.
