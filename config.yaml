@@ -1,7 +1,7 @@
 api_key: null
 cookie:
   expiry_days: 30
-  key: some_key
+  key: some_other_key
   name: some_cookie_name
 credentials:
   usernames:

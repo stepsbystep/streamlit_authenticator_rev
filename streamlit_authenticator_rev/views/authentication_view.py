@@ -52,7 +52,7 @@ class Authenticate:
             Dictionary of user credentials or path to a configuration file.
         cookie_name : str, default='some_cookie_name'
             Name of the re-authentication cookie stored in the client's browser.
-        cookie_key : str, default='some_key'
+        cookie_key : str, default=st.secrets['authenticator_key']
             Secret key used for encrypting the re-authentication cookie.
         cookie_expiry_days : float, default=30.0
             Expiry time for the re-authentication cookie in days.
