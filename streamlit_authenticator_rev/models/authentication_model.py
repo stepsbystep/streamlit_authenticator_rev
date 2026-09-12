@@ -583,6 +583,7 @@ class AuthenticationModel:
             'logged_in': False,
             'first_name': first_name,
             'last_name': last_name,
+            'name' : first_name + ' ' + last_name,
             'password': Hasher.hash(password),
             'roles': roles
         }
